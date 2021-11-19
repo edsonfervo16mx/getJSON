@@ -12,6 +12,29 @@ import (
 func Index(w http.ResponseWriter, r *http.Request) {
 	testReadTxt()
 	testReadCsv()
+	testReadXlsx()
+	fmt.Fprintf(w, "API getJSON")
+}
+
+func testReadTxt() {
+	file, err := ioutil.ReadFile("./test_files/texto.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	text := string(file)
+	fmt.Println(text)
+}
+
+func testReadCsv() {
+	file, err := ioutil.ReadFile("./test_files/lista.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	text := string(file)
+	fmt.Println(text)
+}
+
+func testReadXlsx() {
 	f, err := excelize.OpenFile("./test_files/nombres.xlsx")
 	if err != nil {
 		fmt.Println(err)
@@ -42,23 +65,4 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		}
 		fmt.Println()
 	}
-	fmt.Fprintf(w, "API getJSON")
-}
-
-func testReadTxt() {
-	file, err := ioutil.ReadFile("./test_files/texto.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	text := string(file)
-	fmt.Println(text)
-}
-
-func testReadCsv() {
-	file, err := ioutil.ReadFile("./test_files/lista.csv")
-	if err != nil {
-		log.Fatal(err)
-	}
-	text := string(file)
-	fmt.Println(text)
 }
