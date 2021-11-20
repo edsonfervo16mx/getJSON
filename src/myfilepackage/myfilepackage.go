@@ -8,6 +8,8 @@ type File struct {
 	Size      float32
 }
 
-func (myFile File) GetMetaData() {
+//Obtener datos del archivo
+func (myFile File) GetMetadata() bool {
 	fmt.Println(myFile.Name, "archivo")
+	return true
 }

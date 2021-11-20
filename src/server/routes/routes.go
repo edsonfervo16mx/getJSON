@@ -16,5 +16,7 @@ func ConfigureRoutes() {
 
 	e.GET("/test", handlers.Hello)
 	e.GET("/test/package", handlers.Demo)
+
+	e.GET("/file", handlers.ReadFile)
 	e.Logger.Fatal(e.Start(":3200"))
 }
