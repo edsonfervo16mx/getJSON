@@ -22,23 +22,16 @@ func Hello(c echo.Context) error {
 
 func ReadFile(c echo.Context) error {
 	apikey := c.FormValue("apikey")
+	fmt.Println("***APIKEY***")
 	fmt.Println(apikey)
 	var myFile myfilepackage.File
 	// Obtener Metadatos del Archivo
-	res := myFile.GetMetadata(c)
+	res, name, extension := myFile.GetMetadata(c)
+	fmt.Println("***METADATOS***")
 	fmt.Println(res)
-	/*
-		fmt.Println("******FILE*******")
-		fmt.Println(res)
-		// En base al metadato extraer la info
-		var myXlsx myfilepackage.Xlsx
-		data := myXlsx.TestRead()
-		fmt.Println("******XLSX*******")
-		fmt.Println(data)
-		// Construir el JSON de respuesta
+	fmt.Println(name)
+	fmt.Println(extension)
 
-		// Retornar JSON
-	*/
 	return c.String(http.StatusOK, "Read finish")
 
 }

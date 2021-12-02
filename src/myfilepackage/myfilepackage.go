@@ -2,7 +2,7 @@ package myfilepackage
 
 import (
 	"fmt"
-	"reflect"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -14,30 +14,19 @@ type File struct {
 }
 
 //Obtener datos del archivo
-func (myFile File) GetMetadata(c echo.Context) bool {
-	// Source
+func (myFile File) GetMetadata(c echo.Context) (res bool, name string, extension string) {
 	file, err := c.FormFile("file")
 	if err != nil {
 		fmt.Println(err)
-		return false
+		return false, "", ""
 	}
 	src, err := file.Open()
 	if err != nil {
 		fmt.Println(err)
-		return false
+		return false, "", ""
 	}
-	// fmt.Println(file)
-	fmt.Println("*****")
-	fmt.Println(file.Header)
-	fmt.Println("*****")
-	fmt.Println(reflect.TypeOf(file.Header))
-	fmt.Println(file.Header.Values("Content-Disposition"))
-	nameFile := file.Header.Values("Content-Disposition")
-	fmt.Println(reflect.TypeOf(nameFile))
-	for i := range nameFile {
-		fmt.Println(nameFile[i])
-	}
+	filename := strings.Split(file.Filename, ".")
 	defer src.Close()
 
-	return true
+	return true, filename[0], filename[1]
 }
