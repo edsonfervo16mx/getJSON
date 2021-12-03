@@ -26,11 +26,20 @@ func ReadFile(c echo.Context) error {
 	fmt.Println(apikey)
 	var myFile myfilepackage.File
 	// Obtener Metadatos del Archivo
-	res, name, extension := myFile.GetMetadata(c)
+	res, name, extension, size := myFile.GetMetadata(c)
 	fmt.Println("***METADATOS***")
-	fmt.Println(res)
-	fmt.Println(name)
-	fmt.Println(extension)
+	myFile.Name = name
+	myFile.Extension = extension
+	myFile.Size = size
+	fmt.Println(myFile.Name)
+	fmt.Println(myFile.Extension)
+	fmt.Println(myFile.Size)
+	result := myFile.ValidateSize()
+	if !res || !result {
+		fmt.Println("Error")
+		return c.String(http.StatusBadRequest, "Bad Request")
+	}
+	fmt.Println(result)
 
 	return c.String(http.StatusOK, "Read finish")
 
