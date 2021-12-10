@@ -41,6 +41,14 @@ func ReadFile(c echo.Context) error {
 	}
 	fmt.Println(result)
 
+	switch myFile.Extension {
+	case "xlsx":
+		var myXlsx myfilepackage.Xlsx
+		data := myXlsx.TestRead()
+		fmt.Println(data)
+	default:
+		return c.String(http.StatusNotFound, "Not Found")
+	}
 	return c.String(http.StatusOK, "Read finish")
 
 }
