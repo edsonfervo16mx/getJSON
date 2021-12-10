@@ -2,8 +2,12 @@ package myfilepackage
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"os"
 	"strings"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
 
@@ -11,6 +15,7 @@ type File struct {
 	Name      string
 	Extension string
 	Size      float32
+	Path      string
 }
 
 //Obtener datos del archivo
@@ -36,4 +41,33 @@ func (myFile File) ValidateSize() bool {
 		return true
 	}
 	return false
+}
+
+func (myFile File) Upload(c echo.Context) (res bool) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		return false
+	}
+	src, err := file.Open()
+	if err != nil {
+		return false
+	}
+	defer src.Close()
+
+	dst, err := os.Create(os.Getenv("PATH_FILES") + myFile.Extension + "/" + file.Filename)
+	if err != nil {
+		return false
+	}
+	defer dst.Close()
+
+	if _, err = io.Copy(dst, src); err != nil {
+		return false
+	}
+
+	return true
 }

@@ -40,15 +40,21 @@ func ReadFile(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "Bad Request")
 	}
 	fmt.Println(result)
+	up := myFile.Upload(c)
+	fmt.Println(up)
 
-	switch myFile.Extension {
-	case "xlsx":
-		var myXlsx myfilepackage.Xlsx
-		data := myXlsx.TestRead()
-		fmt.Println(data)
-	default:
-		return c.String(http.StatusNotFound, "Not Found")
-	}
+	/*
+		switch myFile.Extension {
+		case "xlsx":
+			var myXlsx myfilepackage.Xlsx
+			myXlsx.Book = myFile.Name
+			data := myXlsx.GetData(c)
+			fmt.Println(data)
+
+		default:
+			return c.String(http.StatusNotFound, "Not Found")
+		}
+		/**/
 	return c.String(http.StatusOK, "Read finish")
 
 }
